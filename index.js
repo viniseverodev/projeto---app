@@ -57,10 +57,26 @@ const metasRealizadas = async () => {
   }
 
   await select ({
-    message: "Metas Realizadas",
+    message: "Metas Realizadas: " + realizadas.length,
     choices: [...realizadas]
   })
 }
+
+const metasAbertas = async () => {
+  const abertas = metas.filter((meta) => {
+    return meta.checked != true     /* Daria certo também fazendo  !meta.checked tem o mesmo significado de meta.checked != true*/
+  })                                /* Quando colocamos uma ! na frente do meta estamos pegando um boleano e invertando o valor dele */ 
+                                    /* Se ele é verdadeiro ele se tornou falso, se ele for falso se tornara verdadeiro*/
+  if(abertas.length == 0) {
+    console.log("Não existem metas abertas! :)")
+    return
+  }
+
+  await select({
+    message: "Metas Abertas: " + abertas.length,
+    choices:[...abertas]
+  })
+}                                   
 
 const start = async () => {
 
@@ -82,6 +98,10 @@ const start = async () => {
           value: "Realizadas"
         },
         {
+          name: "Metas abertas",
+          value: "Abertas"
+        },
+        {
           name: "Sair",
           value: "Sair"
         }
@@ -98,6 +118,9 @@ const start = async () => {
         break
       case "Realizadas":
         await metasRealizadas()
+        break
+      case "Abertas":
+        await metasAbertas()
         break
       case "Sair":
         console.log("Até a próxima!")
